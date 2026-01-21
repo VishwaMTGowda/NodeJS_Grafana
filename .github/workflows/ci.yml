@@ -1,0 +1,26 @@
+name: CI with Grafana Cloud
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Node app
+        run: |
+          npm install
+          npm start
+
+      - name: Push metrics to Grafana Cloud
+        run: |
+          curl -X POST \
+            -u "$GRAFANA_USER:$GRAFANA_API_KEY" \
+            -H "Content-Type: text/plain" \
+            --data-binary @metrics.prom \
+            $GRAFANA_PROM_URL
