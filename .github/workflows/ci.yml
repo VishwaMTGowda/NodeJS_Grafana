@@ -2,7 +2,7 @@ name: CI with Grafana Cloud
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -18,9 +18,14 @@ jobs:
           npm start
 
       - name: Push metrics to Grafana Cloud
+        env:
+          GRAFANA_USER: ${{ secrets.GRAFANA_USER }}
+          GRAFANA_API_KEY: ${{ secrets.GRAFANA_API_KEY }}
+          GRAFANA_PROM_URL: ${{ secrets.GRAFANA_PROM_URL }}
         run: |
+          echo "Pushing metrics to Grafana Cloud..."
           curl -X POST \
             -u "$GRAFANA_USER:$GRAFANA_API_KEY" \
             -H "Content-Type: text/plain" \
             --data-binary @metrics.prom \
-            $GRAFANA_PROM_URL
+            "$GRAFANA_PROM_URL"
