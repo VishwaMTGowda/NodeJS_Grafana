@@ -1,1 +1,3 @@
-console.log("Hello GitHub Actions + Grafana Cloud!");
+console.log("H
+    
+    ello GitHub Actions + Grafana Cloud!");
